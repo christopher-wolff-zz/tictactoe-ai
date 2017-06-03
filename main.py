@@ -11,7 +11,7 @@ class Game:
                      [0, 3, 6], [1, 4, 7], [2, 5, 8],
                      [0, 4, 8], [2, 4, 6]]
 
-    def __init__(self, board = [str(i) for i in range(9)], currentPlayer = 1):
+    def __init__(self, board = range(9), currentPlayer = 1):
         self.board = board
         self.currentPlayer = currentPlayer
 
@@ -44,7 +44,7 @@ class Game:
             # Repeatedly prompt until a valid move is entered
             while True:
                 if move in self.valid_moves():
-                    self.currentMove = int(move)
+                    self.currentMove = move
                     break
                 else:
                     move = input('Invalid move. Enter a number between 0 and 8: ')
@@ -75,7 +75,7 @@ class Game:
             return False
 
     def valid_moves(self):
-        return [int(i) for i in self.board if i != 'X' and i != 'O']
+        return [i for i in self.board if i != 'X' and i != 'O']
 
     def minimax(self, depth=0):
         if self.gameOver():
