@@ -9,7 +9,7 @@ class Game:
 
     winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
                      [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                     [0, 4, 8], [2, 4, 7]]
+                     [0, 4, 8], [2, 4, 6]]
 
     def __init__(self, board = [str(i) for i in range(9)], currentPlayer = 1):
         self.board = board
@@ -38,6 +38,7 @@ class Game:
             print("It's a draw.")
 
     def getMove(self):
+        # User
         if self.currentPlayer == 1:
             move = input('User move: ')
             # Repeatedly prompt until a valid move is entered
@@ -47,8 +48,9 @@ class Game:
                     break
                 else:
                     move = input('Invalid move. Enter a number between 0 and 8: ')
+        # Computer
         else:
-            self.minimax()  # sets current move on its own
+            self.minimax()
             print('Comp move: {}'.format(self.currentMove))
 
     def makeMove(self):
@@ -75,7 +77,7 @@ class Game:
     def valid_moves(self):
         return [int(i) for i in self.board if i != 'X' and i != 'O']
 
-    def minimax(self):
+    def minimax(self, depth=0):
         if self.gameOver():
             return self.value()
 
@@ -88,7 +90,7 @@ class Game:
             possible_game.makeMove()
             possible_game.switchPlayer()
 
-            moveValues[move] = possible_game.minimax()
+            moveValues[move] = possible_game.minimax(depth+1)
 
         if self.currentPlayer == 1:
             # Player 1 wants to maximize
@@ -98,9 +100,10 @@ class Game:
             # Player 2 wants to minimize
             min_value = min(moveValues.values())
             # Set current move for the computer
-            best_moves = [m for m in moveValues.keys() if moveValues[m] == min_value]
-            best_move = random.choice(best_moves)
-            self.currentMove = best_move
+            if depth == 0:
+                best_moves = [m for m in moveValues.keys() if moveValues[m] == min_value]
+                best_move = random.choice(best_moves)
+                self.currentMove = best_move
 
             return min_value
 
