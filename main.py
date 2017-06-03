@@ -18,7 +18,6 @@ class Game:
     def run(self):
         # Main loop
         while not self.gameOver():
-            # Print turn number
             if self.turn() is not 1:
                 print('------------')
             print('Turn {}:'.format(self.turn()))
@@ -41,7 +40,6 @@ class Game:
         # User
         if self.currentPlayer == 1:
             move = input('User move: ')
-            # Repeatedly prompt until a valid move is entered
             while True:
                 if move in self.valid_moves():
                     self.currentMove = move
