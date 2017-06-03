@@ -11,14 +11,14 @@ class Game:
                      [0, 3, 6], [1, 4, 7], [2, 5, 8],
                      [0, 4, 8], [2, 4, 6]]
 
-    def __init__(self, board = range(9), currentPlayer = 1):
+    def __init__(self, board=range(9), currentPlayer=1):
         self.board = board
         self.currentPlayer = currentPlayer
 
     def run(self):
         # Main loop
         while not self.gameOver():
-            if self.turn() is not 1:
+            if self.turn() != 1:
                 print('------------')
             print('Turn {}:'.format(self.turn()))
 
@@ -83,11 +83,11 @@ class Game:
         for move in self.valid_moves():
             # Create new Game instance
             possible_game = Game(self.board[:], self.currentPlayer) # Slice the board to lose the reference
-
+            # Execute move
             possible_game.currentMove = move
             possible_game.makeMove()
             possible_game.switchPlayer()
-
+            # Push value to dictionary
             moveValues[move] = possible_game.minimax(depth+1)
 
         if self.currentPlayer == 1:
@@ -118,6 +118,7 @@ class Game:
         print('{} {} {}'.format(self.board[0], self.board[1], self.board[2]))
         print('{} {} {}'.format(self.board[3], self.board[4], self.board[5]))
         print('{} {} {}'.format(self.board[6], self.board[7], self.board[8]))
+
 
 # Run
 if __name__ == '__main__':
