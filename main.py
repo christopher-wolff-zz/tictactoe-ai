@@ -1,6 +1,7 @@
+import random
+
 # Game
 class Game:
-
     '''
     Player 1 (X) is the user
     Player 2 (O) is the computer
@@ -10,33 +11,45 @@ class Game:
                      [0, 3, 6], [1, 4, 7], [2, 5, 8],
                      [0, 4, 8], [2, 4, 7]]
 
-    def __init__(self, board = [str(i) for i in range(9)], turn = 1, currentPlayer = 1):
+    def __init__(self, board = [str(i) for i in range(9)], currentPlayer = 1):
         self.board = board
-        self.turn = turn
         self.currentPlayer = currentPlayer
 
     def run(self):
+        # Main loop
         while not self.gameOver():
             # Print turn number
-            if self.turn is not 1:
+            if self.turn() is not 1:
                 print('------------')
-            print('Turn {}:'.format(self.turn))
-            # Main logic
+            print('Turn {}:'.format(self.turn()))
+
             self.drawBoard()
             self.getMove()
             self.makeMove()
             self.switchPlayer()
-            self.turn = self.turn + 1
+        # End of game
+        print('------------')
+        self.drawBoard()
+        if self.value() == 1:
+            print('User wins.')
+        elif self.value() == -1:
+            print('Computer wins.')
+        else:
+            print("It's a draw.")
 
     def getMove(self):
         if self.currentPlayer == 1:
             move = input('User move: ')
-            # TODO: Check move validity
-            self.currentMove = int(move)
+            # Repeatedly prompt until a valid move is entered
+            while True:
+                if move in self.valid_moves():
+                    self.currentMove = int(move)
+                    break
+                else:
+                    move = input('Invalid move. Enter a number between 0 and 8: ')
         else:
-            move = 4
-            print('Comp move: {}'.format(move))
-            self.currentMove = move
+            self.minimax()  # sets current move on its own
+            print('Comp move: {}'.format(self.currentMove))
 
     def makeMove(self):
         if self.currentPlayer == 1:
@@ -50,26 +63,48 @@ class Game:
         else:
             self.currentPlayer = 1
 
+    def turn(self):
+        return len([i for i in self.board if i == 'X' or i == 'O']) + 1
+
     def gameOver(self):
-        if self.value() == 1:
-            print('------------')
-            self.drawBoard()
-            print('User wins.')
-            return True
-        elif self.value() == -1:
-            print('------------')
-            self.drawBoard()
-            print('Computer wins.')
-            return True
-        elif self.turn > 9:
-            print('------------')
-            self.drawBoard()
-            print("It's a draw.")
+        if self.value() == 1 or self.value() == -1 or self.turn() > 9:
             return True
         else:
             return False
 
-    # value returns 1 if the user wins, -1 if the computer wins, and 0 otherwise
+    def valid_moves(self):
+        return [int(i) for i in self.board if i != 'X' and i != 'O']
+
+    def minimax(self):
+        if self.gameOver():
+            return self.value()
+
+        moveValues = {}
+        for move in self.valid_moves():
+            # Create new Game instance
+            possible_game = Game(self.board[:], self.currentPlayer) # Slice the board to lose the reference
+
+            possible_game.currentMove = move
+            possible_game.makeMove()
+            possible_game.switchPlayer()
+
+            moveValues[move] = possible_game.minimax()
+
+        if self.currentPlayer == 1:
+            # Player 1 wants to maximize
+            max_value = max(moveValues.values())
+            return max_value
+        else:
+            # Player 2 wants to minimize
+            min_value = min(moveValues.values())
+            # Set current move for the computer
+            best_moves = [m for m in moveValues.keys() if moveValues[m] == min_value]
+            best_move = random.choice(best_moves)
+            self.currentMove = best_move
+
+            return min_value
+
+    # Returns 1 if the user wins, -1 if the computer wins, and 0 otherwise
     def value(self):
         for combo in self.winningCombos:
             if self.board[combo[0]] == self.board[combo[1]] == self.board[combo[2]] == 'X':
