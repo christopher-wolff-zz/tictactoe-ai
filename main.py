@@ -1,7 +1,18 @@
+'''Main module.
+
+Creates a new tic-tac-toe game and runs it.
+'''
+
+__author__ = 'Christopher Wolff'
+__license__ = 'MIT'
+__version__ = '1.0'
+__date__ = '6/3/2017'
+
 import random
 
 # Game
 class Game:
+
     '''
     Player 1 (X) is the user
     Player 2 (O) is the computer
@@ -104,8 +115,8 @@ class Game:
 
             return min_value
 
-    # Returns 1 if the user wins, -1 if the computer wins, and 0 otherwise
     def value(self):
+        '''Returns 1 if the user wins, -1 if the computer wins, and 0 otherwise.'''
         for combo in self.winningCombos:
             if self.board[combo[0]] == self.board[combo[1]] == self.board[combo[2]] == 'X':
                 return 1
