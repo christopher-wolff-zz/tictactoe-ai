@@ -1,6 +1,8 @@
 '''Main module.
 
-Creates a new tic-tac-toe game and runs it.
+Creates a tic-tac-toe game against the computer.
+User goes first by default.
+Minimax algorithm optimizes decisions.
 '''
 
 __author__ = 'Christopher Wolff'
