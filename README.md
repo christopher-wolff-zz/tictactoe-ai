@@ -1,2 +1,2 @@
-# TicTacToe-AI
+# TicTacToe AI
 Minimax agent for TicTacToe
