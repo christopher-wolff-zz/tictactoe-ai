@@ -11,6 +11,7 @@ __date__ = '6/3/2017'
 
 import random
 
+
 # Game
 class Game:
 
@@ -20,10 +21,10 @@ class Game:
     '''
 
     winning_combos = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
-                     [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                     [0, 4, 8], [2, 4, 6]]
+                      [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                      [0, 4, 8], [2, 4, 6]]
 
-    def __init__(self, board=[0,1,2,3,4,5,6,7,8], current_player=1):
+    def __init__(self, board=[0, 1, 2, 3, 4, 5, 6, 7, 8], current_player=1):
         self.board = board
         self.current_player = current_player
 
@@ -93,7 +94,7 @@ class Game:
         move_values = {}
         for move in self.valid_moves():
             # Create new Game instance
-            possible_game = Game(self.board[:], self.current_player) # Slice the board to lose the reference
+            possible_game = Game(self.board[:], self.current_player)
             # Execute move
             possible_game.current_move = move
             possible_game.make_move()
