@@ -30,6 +30,7 @@ class Game:
         Args
             board (list): The initial board state.
             current_player (int): The player to make the first move.
+
         """
         self.board = board or [0, 1, 2, 3, 4, 5, 6, 7, 8]
         self.current_player = current_player
